@@ -1,7 +1,8 @@
+package com.ismaelo.apiapp.data.loca
+
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.ismaelo.apiapp.data.loca.Movie
 
 @Dao
 interface MovieDao {
