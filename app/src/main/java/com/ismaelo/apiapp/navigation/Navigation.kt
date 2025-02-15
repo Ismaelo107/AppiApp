@@ -2,32 +2,25 @@ package com.ismaelo.apiapp.navigation
 
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.ismaelo.apiapp.ui.view.CreditsScreen
-import com.ismaelo.apiapp.ui.view.screens.FavoritesScreen
-import com.ismaelo.apiapp.ui.view.screens.LocalMovieDetailScreen
-import com.ismaelo.apiapp.ui.view.screens.MainScreen
-import com.ismaelo.apiapp.ui.view.screens.MovieDetailScreen
-import com.ismaelo.apiapp.ui.view.screens.NowPlaying
-import com.ismaelo.apiapp.ui.view.screens.Popular
-import com.ismaelo.apiapp.ui.view.screens.TopRated
-import com.ismaelo.apiapp.ui.view.screens.UpComing
+import androidx.navigation.compose.rememberNavController
+import com.ismaelo.apiapp.ui.view.MainScreen
+import com.ismaelo.apiapp.ui.view.MovieDetailScreen
+import com.ismaelo.apiapp.ui.view.NowPlaying
+import com.ismaelo.apiapp.ui.view.Popular
+import com.ismaelo.apiapp.ui.view.TopRated
+import com.ismaelo.apiapp.ui.view.Upcoming
 import com.ismaelo.apiapp.viewModel.MovieViewModel
 
 @Composable
-fun AppNavigation(
-    modifier: Modifier = Modifier, movieViewModel: MovieViewModel, navController: NavHostController
-) {
-
+fun AppNavigation(movieViewModel: MovieViewModel) {
+    val navController = rememberNavController()
 
     NavHost(
         navController = navController,
         startDestination = "home",
     ) {
-
         composable("home") {
             MainScreen(movieViewModel, navController)
         }
@@ -41,22 +34,12 @@ fun AppNavigation(
             TopRated(movieViewModel, navController)
         }
         composable("up_coming") {
-            UpComing(movieViewModel, navController)
-        }
-        composable("favorite_Screen") {
-            FavoritesScreen(movieViewModel, navController)
-        }
-        composable("creditos_screen") {
-            CreditsScreen(modifier)
+            Upcoming(movieViewModel, navController)
         }
 
         composable("movie_details/{movieId}") { backStackEntry ->
-            val movieId: String = backStackEntry.arguments?.getString("movieId").toString()
-            MovieDetailScreen(movieId, movieViewModel)
-        }
-        composable("local_movie_details/{movieId}") { backStackEntry ->
-            val movieId: String = backStackEntry.arguments?.getString("movieId").toString()
-            LocalMovieDetailScreen(movieId, movieViewModel)
+            val movieId = backStackEntry.arguments?.getString("movieId")
+            MovieDetailScreen(movieId)
         }
     }
 
