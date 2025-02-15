@@ -37,6 +37,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
 }
 
@@ -78,6 +79,9 @@ dependencies {
 //APN. Navigation
     implementation("androidx.navigation:navigation-compose:2.8.2")
     implementation("androidx.navigation:navigation-runtime-ktx:2.8.2")
+
+    implementation("io.coil-kt:coil-compose:2.2.2")
+
 
 
 }
