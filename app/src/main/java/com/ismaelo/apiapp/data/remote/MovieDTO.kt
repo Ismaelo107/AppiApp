@@ -1,7 +1,7 @@
 package com.ismaelo.apiapp.data.remote
 
 import com.google.gson.annotations.SerializedName
-import com.ismaelo.apiapp.data.local.Movie
+import com.ismaelo.apiapp.data.loca.Movie
 
 
 data class MovieDTO(
@@ -12,7 +12,7 @@ data class MovieDTO(
     @SerializedName("overview")
     val overview: String,
     @SerializedName("poster_path")
-    val image: String,
+    val image: String, //IMAGE??
     @SerializedName("popularity")
     val popularity: String,
     @SerializedName("vote_average")
