@@ -6,9 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [Comic::class], version = 1, exportSchema = false)
+@Database(entities = [Movie::class], version = 1, exportSchema = false)
 abstract class AppDataBase : RoomDatabase() {
-    abstract fun comicDao(): ComicDao
+    abstract fun comicDao(): MovieDao
 
     companion object {
         @Volatile
@@ -17,7 +17,7 @@ abstract class AppDataBase : RoomDatabase() {
         fun getDatabase(context: Context): AppDataBase {
             return Instance ?: synchronized(this) {
                 Room
-                    .databaseBuilder(context, AppDataBase::class.java, "comicsdb.sql")
+                    .databaseBuilder(context, AppDataBase::class.java, "moviedtb.sql")
                     .build()
                     .also { Instance = it }
 
