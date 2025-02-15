@@ -83,6 +83,7 @@ class MovieViewModel : ViewModel() {
         }
     }
 
+    // Función para obtener las próximas películas
     fun fetchUpcomingMovies() {
         _isLoading.value = true
 
