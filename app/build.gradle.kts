@@ -52,8 +52,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.core.splashscreen)
-    implementation(libs.androidx.tv.material)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -85,6 +83,5 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.2")
 
 
-    implementation("com.google.accompanist:accompanist-navigation-animation:0.31.5-beta")
 
 }
