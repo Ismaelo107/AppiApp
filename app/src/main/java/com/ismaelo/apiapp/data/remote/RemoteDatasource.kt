@@ -12,9 +12,9 @@ class NetworkException(message: String) : Exception(message)
 
 class RemoteDatasource(private val apiService: ApiService) {
 
-    suspend fun getAllMovies(apiKey: String): Result<MovieResponse> {
+    suspend fun nowPlayingMovies(apiKey: String): Result<MovieResponse> {
         return try {
-            val response = apiService.getAllMovies(apiKey)
+            val response = apiService.nowPlayingMovies(apiKey)
             handleResponse(response)
         } catch (e: Exception) {
             Result.Error(e)
