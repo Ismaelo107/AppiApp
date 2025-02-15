@@ -1,16 +1,29 @@
 package com.ismaelo.apiapp.data.remote
 
+import com.ismaelo.apiapp.core.Constants
+import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Path
-
+import retrofit2.http.Query
 
 interface ApiService {
 
-    @GET("info.0.json")
-    suspend fun getLastComic(): ComicDTO
+    @GET("movie/now_playing")
+    suspend fun getAllMovies(
+        @Query("api_key") apiKey: String
+    ): Response<MovieResponse>
 
-    //Ojo, Path: https://guides.codepath.com/android/consuming-apis-with-retrofit
-    @GET("{num}/info.0.json")
-    suspend fun getComic(@Path("num") num: Int): ComicDTO
+    @GET("movie/popular")
+    suspend fun getPopular(
+        @Query("api_key") apiKey: String
+    ): Response<MovieResponse>
 
+    @GET("movie/top_rated")
+    suspend fun getTopRated(
+        @Query("api_key") apiKey: String
+    ): Response<MovieResponse>
+
+    @GET("movie/upcoming")
+    suspend fun getUpComing(
+        @Query("api_key") apiKey: String
+    ): Response<MovieResponse>
 }
