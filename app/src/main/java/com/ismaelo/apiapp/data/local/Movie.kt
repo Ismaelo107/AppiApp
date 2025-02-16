@@ -9,6 +9,6 @@ data class Movie(
     val title: String,
     val overview: String,
     val image: String,
-    val popularity: String,
-    val rating: String
+    val popularity: String, // FLOAT??
+    val rating: String // FLOAT??
 )
