@@ -1,4 +1,4 @@
-package com.ismaelo.apiapp.data.loca
+package com.ismaelo.apiapp.data.local
 
 import android.content.Context
 import androidx.room.Database
