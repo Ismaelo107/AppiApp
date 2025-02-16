@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,17 +35,26 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.ismaelo.apiapp.data.remote.MovieDTO
 import com.ismaelo.apiapp.data.remote.toLocalMovie
+import com.ismaelo.apiapp.navigation.Destinations
+import com.ismaelo.apiapp.ui.view.component.MovieCard
 import com.ismaelo.apiapp.viewModel.MovieViewModel
-
 @Composable
 fun Popular(movieViewModel: MovieViewModel, navController: NavHostController) {
     val movies by movieViewModel.popularMovies.collectAsState()
     val isLoading by movieViewModel.isLoading.collectAsState()
+    val isConnected by movieViewModel.isConnected.collectAsState() // Observamos el estado de conexión
+
+    // Si no hay conexión, redirigir a MainScreen
+    LaunchedEffect(isConnected) {
+        if (!isConnected) {
+            navController.navigate("main_screen") // Asegúrate de que "main_screen" está en tu NavGraph
+        }
+    }
 
     // Cargar las películas populares solo una vez
     LaunchedEffect(Unit) {
         movieViewModel.fetchPopularMovies()
-        movieViewModel.fetchFavoriteMovies() // Cargar favoritos solo una vez
+        movieViewModel.fetchFavoriteMovies()
     }
 
     Column(
@@ -54,94 +64,31 @@ fun Popular(movieViewModel: MovieViewModel, navController: NavHostController) {
     ) {
         Text(text = "Popular Movies", style = MaterialTheme.typography.titleLarge)
 
-        if (isLoading) {
-            Text("Loading...")
-        } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2), // Dos columnas
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(movies.size) { index ->
-                    MovieCard(
-                        movie = movies[index],
-                        navController = navController,
-                        movieViewModel = movieViewModel
-                    )
+        when {
+            isLoading -> {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+            }
+            movies.isNotEmpty() -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2), modifier = Modifier.fillMaxSize()
+                ) {
+                    items(movies.size) { index ->
+                        MovieCard(
+                            movie = movies[index],
+                            navController = navController,
+                            movieViewModel = movieViewModel
+                        )
+                    }
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun MovieCard(movie: MovieDTO, navController: NavHostController, movieViewModel: MovieViewModel) {
-    var isFavorite by remember { mutableStateOf(false) } // Estado del favorito
-
-    // Escucha el estado de los favoritos en el ViewModel
-    val favorites = movieViewModel.favoriteMovies.collectAsState().value
-    LaunchedEffect(movie.id) {
-        // Comprobar si la película ya está en favoritos
-        isFavorite = favorites.any { it.id == movie.id }
-    }
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp), shape = MaterialTheme.shapes.medium
-    ) {
-        Column(
-            modifier = Modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = rememberAsyncImagePainter("https://image.tmdb.org/t/p/w500${movie.image}"),
-                contentDescription = movie.title,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = movie.title,
-                style = MaterialTheme.typography.bodyLarge,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = "Rating: ${movie.rating}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Gray
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            IconButton(
-                onClick = {
-                    if (isFavorite) {
-                        // Si es favorito, eliminar de la base de datos
-                        movieViewModel.deleteMovieFromLocal(movie.toLocalMovie())
-                    } else {
-                        // Si no es favorito, guardarlo en la base de datos
-                        movieViewModel.saveMovieToLocal(movie)
-                    }
-                    isFavorite = !isFavorite // Cambiar el estado de favorito
-                }, modifier = Modifier.size(40.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Favorite,
-                    contentDescription = "Favorite",
-                    tint = if (isFavorite) Color.Red else Color.Gray
-                )
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Button(onClick = { navController.navigate("movie_details/${movie.id}") }) {
-                Text(text = "See Details")
+            else -> {
+                Text("No movies available.", color = Color.Red)
+                Button(
+                    onClick = { navController.navigate(route = Destinations.Favorite_route.route) },
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                ) {
+                    Text(text = "Ver mis favoritos")
+                }
             }
         }
     }
