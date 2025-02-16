@@ -1,25 +1,22 @@
 package com.ismaelo.apiapp.data.local
 
 import android.content.Context
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.http.Query
 
 class LocalDatasource(applicationContext: Context) {
     private val db: AppDataBase = AppDataBase.getDatabase(applicationContext)
 
     suspend fun getAll(): List<Movie> {
-        return db.MovieDao().getAllMovies()
+        return db.MovieDao().getAllMovies() // Retorna todas las películas almacenadas
     }
-
-    suspend fun getById(id: String): Movie?{
-        return db.MovieDao().getMovieById(id)
-    }
-
 
     suspend fun insert(movie: Movie) {
+        // Ejecuta la inserción en un hilo de fondo
         withContext(Dispatchers.IO) {
-            db.MovieDao().insert(movie)
+            val result = db.MovieDao().insert(movie)
+            Log.d("LOCALDS", "Resultado de la inserción: $result")
         }
     }
 

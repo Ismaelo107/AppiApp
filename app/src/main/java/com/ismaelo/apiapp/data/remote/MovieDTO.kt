@@ -1,7 +1,7 @@
 package com.ismaelo.apiapp.data.remote
 
 import com.google.gson.annotations.SerializedName
-import com.ismaelo.apiapp.data.loca.Movie
+import com.ismaelo.apiapp.data.local.Movie
 
 
 data class MovieDTO(
