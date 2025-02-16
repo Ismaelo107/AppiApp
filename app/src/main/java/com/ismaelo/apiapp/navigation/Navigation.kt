@@ -5,12 +5,13 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.ismaelo.apiapp.ui.view.FavoritesScreen
 import com.ismaelo.apiapp.ui.view.MainScreen
 import com.ismaelo.apiapp.ui.view.MovieDetailScreen
 import com.ismaelo.apiapp.ui.view.NowPlaying
 import com.ismaelo.apiapp.ui.view.Popular
 import com.ismaelo.apiapp.ui.view.TopRated
-import com.ismaelo.apiapp.ui.view.Upcoming
+import com.ismaelo.apiapp.ui.view.UpComing
 import com.ismaelo.apiapp.viewModel.MovieViewModel
 
 @Composable
@@ -34,7 +35,10 @@ fun AppNavigation(movieViewModel: MovieViewModel) {
             TopRated(movieViewModel, navController)
         }
         composable("up_coming") {
-            Upcoming(movieViewModel, navController)
+            UpComing(movieViewModel, navController)
+        }
+        composable("favorite_Screen") {
+            FavoritesScreen(movieViewModel, navController)
         }
 
         composable("movie_details/{movieId}") { backStackEntry ->

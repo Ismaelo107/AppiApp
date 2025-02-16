@@ -1,5 +1,6 @@
 package com.ismaelo.apiapp.viewModel
 
+import androidx.compose.material3.Text
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ismaelo.apiapp.core.Constants
@@ -42,6 +43,13 @@ class MovieViewModel(private val localDatasource: LocalDatasource) : ViewModel()
         _uiState.value = ScreenState.Error("Error: ${exception.localizedMessage}")
     }
 
+    private val _isConnected = MutableStateFlow(true) // Suponemos que hay conexión al inicio
+    val isConnected: StateFlow<Boolean> = _isConnected
+
+    fun updateConnectionStatus(status: Boolean) {
+        _isConnected.value = status
+    }
+
     fun fetchPopularMovies() {
         _isLoading.value = true
         viewModelScope.launch(handler) {
@@ -49,18 +57,23 @@ class MovieViewModel(private val localDatasource: LocalDatasource) : ViewModel()
                 val response = RetrofitBuilder.apiService.getPopular(Constants.API_KEY)
                 if (response.isSuccessful) {
                     _popularMovies.value = response.body()?.results ?: emptyList()
+                    _uiState.value = ScreenState.Success(_popularMovies.value)
                 } else {
                     _popularMovies.value = emptyList()
+                    _uiState.value =
+                        ScreenState.Error("Error al obtener las películas populares desde el servidor.")
                 }
             } catch (e: Exception) {
-                _popularMovies.value = emptyList()
+                // Si no hay internet o algún otro error, cargar desde la base de datos local
                 _uiState.value =
-                    ScreenState.Error("Error al obtener las películas populares: ${e.localizedMessage}")
+                    ScreenState.Error("Error al obtener las películas populares desde el servidor: ${e.localizedMessage}")
+
             } finally {
                 _isLoading.value = false
             }
         }
     }
+
 
     fun fetchNowPlayingMovies() {
         _isLoading.value = true
