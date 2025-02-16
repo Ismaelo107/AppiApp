@@ -41,7 +41,7 @@ fun Upcoming(movieViewModel: MovieViewModel, navController: NavHostController) {
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(movies.size) { index ->
-                    MovieCard(movie = movies[index], navController = navController)
+                    MovieCard(movie = movies[index], navController = navController, movieViewModel = movieViewModel)
                 }
             }
         }

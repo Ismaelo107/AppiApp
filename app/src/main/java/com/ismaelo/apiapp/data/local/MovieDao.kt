@@ -1,4 +1,4 @@
-package com.ismaelo.apiapp.data.loca
+package com.ismaelo.apiapp.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert

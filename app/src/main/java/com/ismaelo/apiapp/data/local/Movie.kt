@@ -1,4 +1,4 @@
-package com.ismaelo.apiapp.data.loca
+package com.ismaelo.apiapp.data.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
