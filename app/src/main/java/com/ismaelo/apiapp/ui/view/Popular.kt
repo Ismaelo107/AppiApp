@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import com.ismaelo.apiapp.data.remote.MovieDTO
+import com.ismaelo.apiapp.data.remote.toLocalMovie
 import com.ismaelo.apiapp.viewModel.MovieViewModel
 
 @Composable
@@ -40,8 +41,10 @@ fun Popular(movieViewModel: MovieViewModel, navController: NavHostController) {
     val movies by movieViewModel.popularMovies.collectAsState()
     val isLoading by movieViewModel.isLoading.collectAsState()
 
+    // Cargar las películas populares solo una vez
     LaunchedEffect(Unit) {
         movieViewModel.fetchPopularMovies()
+        movieViewModel.fetchFavoriteMovies() // Cargar favoritos solo una vez
     }
 
     Column(
@@ -59,7 +62,11 @@ fun Popular(movieViewModel: MovieViewModel, navController: NavHostController) {
                 modifier = Modifier.fillMaxSize()
             ) {
                 items(movies.size) { index ->
-                    MovieCard(movie = movies[index], navController = navController)
+                    MovieCard(
+                        movie = movies[index],
+                        navController = navController,
+                        movieViewModel = movieViewModel
+                    )
                 }
             }
         }
@@ -67,8 +74,15 @@ fun Popular(movieViewModel: MovieViewModel, navController: NavHostController) {
 }
 
 @Composable
-fun MovieCard(movie: MovieDTO, navController: NavHostController) {
+fun MovieCard(movie: MovieDTO, navController: NavHostController, movieViewModel: MovieViewModel) {
     var isFavorite by remember { mutableStateOf(false) } // Estado del favorito
+
+    // Escucha el estado de los favoritos en el ViewModel
+    val favorites = movieViewModel.favoriteMovies.collectAsState().value
+    LaunchedEffect(movie.id) {
+        // Comprobar si la película ya está en favoritos
+        isFavorite = favorites.any { it.id == movie.id }
+    }
 
     Card(
         modifier = Modifier
@@ -106,7 +120,16 @@ fun MovieCard(movie: MovieDTO, navController: NavHostController) {
             Spacer(modifier = Modifier.height(8.dp))
 
             IconButton(
-                onClick = { isFavorite = !isFavorite }, modifier = Modifier.size(40.dp)
+                onClick = {
+                    if (isFavorite) {
+                        // Si es favorito, eliminar de la base de datos
+                        movieViewModel.deleteMovieFromLocal(movie.toLocalMovie())
+                    } else {
+                        // Si no es favorito, guardarlo en la base de datos
+                        movieViewModel.saveMovieToLocal(movie)
+                    }
+                    isFavorite = !isFavorite // Cambiar el estado de favorito
+                }, modifier = Modifier.size(40.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Favorite,
