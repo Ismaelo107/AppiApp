@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ismaelo.apiapp.data.local.LocalDatasource
 
-@Suppress("UNCHECKED_CAST")
 class MovieViewModelFactory(
     private val localDatasource: LocalDatasource
 ) : ViewModelProvider.Factory {
