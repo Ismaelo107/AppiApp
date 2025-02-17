@@ -1,4 +1,4 @@
-package com.ismaelo.apiapp.ui.view
+package com.ismaelo.apiapp.ui.view.screens
 
 
 import androidx.compose.foundation.Image

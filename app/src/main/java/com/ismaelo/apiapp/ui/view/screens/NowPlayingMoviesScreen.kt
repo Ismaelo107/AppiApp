@@ -1,4 +1,4 @@
-package com.ismaelo.apiapp.ui.view
+package com.ismaelo.apiapp.ui.view.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,11 +23,12 @@ import com.ismaelo.apiapp.ui.view.component.MovieCard
 import com.ismaelo.apiapp.viewModel.MovieViewModel
 
 @Composable
-fun TopRated(movieViewModel: MovieViewModel, navController: NavHostController) {
+fun NowPlaying(movieViewModel: MovieViewModel, navController: NavHostController) {
     val movies by movieViewModel.popularMovies.collectAsState()
     val isLoading by movieViewModel.isLoading.collectAsState()
     val isConnected by movieViewModel.isConnected.collectAsState() // Observamos el estado de conexión
 
+    // Si no hay conexión, redirigir a MainScreen
     LaunchedEffect(isConnected) {
         if (!isConnected) {
             navController.navigate("main_screen") // Asegúrate de que "main_screen" está en tu NavGraph
@@ -36,7 +37,7 @@ fun TopRated(movieViewModel: MovieViewModel, navController: NavHostController) {
 
     // Cargar las películas populares solo una vez
     LaunchedEffect(Unit) {
-        movieViewModel.fetchTopRatedMovies()
+        movieViewModel.fetchNowPlayingMovies()
         movieViewModel.fetchFavoriteMovies()
     }
 
