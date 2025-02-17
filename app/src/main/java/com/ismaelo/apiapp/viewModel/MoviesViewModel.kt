@@ -1,6 +1,5 @@
 package com.ismaelo.apiapp.viewModel
 
-import androidx.compose.material3.Text
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ismaelo.apiapp.core.Constants
