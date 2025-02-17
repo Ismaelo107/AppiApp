@@ -2,9 +2,6 @@ package com.ismaelo.apiapp.ui.view.screens
 
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -83,61 +81,52 @@ fun FavoriteMovieCard(
             .fillMaxWidth()
             .padding(8.dp), shape = MaterialTheme.shapes.medium
     ) {
-        Box(
-            modifier = Modifier.fillMaxWidth()
+        Column(
+            modifier = Modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
                 painter = rememberAsyncImagePainter("https://image.tmdb.org/t/p/w500${movie.image}"),
                 contentDescription = movie.title,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(250.dp)
-                    .clickable { navController.navigate("local_movie_details/${movie.id}") },
+                    .height(200.dp)
+            )
 
-                )
+            Spacer(modifier = Modifier.height(8.dp))
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .background(Color.Black.copy(alpha = 0.7f)) // Fondo oscuro semitransparente
-                    .padding(8.dp)
-            ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(
-                        text = movie.title,
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.White,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+            Text(
+                text = movie.title,
+                style = MaterialTheme.typography.bodyLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
 
-                    Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
-                    Text(
-                        text = "⭐ ${movie.rating}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Yellow
-                    )
-                }
-            }
+            Text(
+                text = "Rating: ${movie.rating}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray
+            )
 
-            // Icono de favorito arriba a la derecha
+            Spacer(modifier = Modifier.height(8.dp))
+
             IconButton(
-                onClick = { movieViewModel.deleteMovieFromLocal(movie) },
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(8.dp)
-                    .size(40.dp)
+                onClick = {
+                    movieViewModel.deleteMovieFromLocal(movie)
+                }, modifier = Modifier.size(40.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Favorite,
                     contentDescription = "Remove Favorite",
                     tint = Color.Red
                 )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Button(onClick = { navController.navigate("movie_details/${movie.id}") }) {
+                Text(text = "See Details")
             }
         }
 
