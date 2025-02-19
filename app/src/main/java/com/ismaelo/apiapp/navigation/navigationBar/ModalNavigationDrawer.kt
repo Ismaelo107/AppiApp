@@ -23,7 +23,6 @@ fun DrawerContent(navController: NavHostController) {
     ModalDrawerSheet {
         Column(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
 

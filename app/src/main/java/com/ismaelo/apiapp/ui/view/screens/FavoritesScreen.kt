@@ -123,7 +123,7 @@ fun FavoriteMovieCard(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Button(onClick = { navController.navigate("movie_details/${movie.id}") }) {
+            Button(onClick = { navController.navigate("local_movie_details/${movie.id}") }) {
                 Text(text = "See Details")
             }
         }
