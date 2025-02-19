@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.ismaelo.apiapp.navigation.Destinations
@@ -37,70 +38,51 @@ fun MovieScreen(
 ) {
     val movies by movieViewModel.popularMovies.collectAsState()
     val isLoading by movieViewModel.isLoading.collectAsState()
-
+    val isConnected = checkInternetConnection(LocalContext.current)
 
     LaunchedEffect(Unit) {
-        fetchMovies()
-        movieViewModel.fetchFavoriteMovies()
+        if (isConnected) {
+            fetchMovies()
+            movieViewModel.fetchFavoriteMovies()
+        }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    if (!isConnected) {
+        NoConnectionScreen(navController)
+    } else {
+        Box(modifier = Modifier.fillMaxSize()) {
+            AnimatedGradientBackground()
 
-        AnimatedGradientBackground()
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .background(Color.Transparent)
+            ) {
+                Text(text = title, style = MaterialTheme.typography.titleLarge, color = Color.White)
 
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-                .background(Color.Transparent)
-        ) {
-            Text(text = title, style = MaterialTheme.typography.titleLarge, color = Color.White)
-
-            when {
-                isLoading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-                movies.isNotEmpty() -> LazyVerticalGrid(
-                    columns = GridCells.Fixed(2), modifier = Modifier.fillMaxSize()
-                ) {
-                    items(movies.size) { index ->
-                        MovieCard(
-                            movie = movies[index],
-                            navController = navController,
-                            movieViewModel = movieViewModel
-                        )
+                when {
+                    isLoading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                    movies.isNotEmpty() -> LazyVerticalGrid(
+                        columns = GridCells.Fixed(2), modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(movies.size) { index ->
+                            MovieCard(
+                                movie = movies[index],
+                                navController = navController,
+                                movieViewModel = movieViewModel
+                            )
+                        }
                     }
+                    else -> NoConnectionScreen(navController)  // Si no hay películas disponibles, mostrar la pantalla de error.
                 }
-
-                else -> NoMoviesAvailableScreens(navController)
             }
         }
     }
 }
 
-@Composable
-fun NoMoviesAvailableScreens(navController: NavHostController) {
-    AnimatedGradientBackground() // Fondo animado o transparente
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentHeight(align = Alignment.CenterVertically)
-            .padding(16.dp)
-            .background(Color.Transparent), // Fondo transparente
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            "No movies available.", color = Color.White, style = MaterialTheme.typography.bodyLarge
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(
-            onClick = { navController.navigate(route = Destinations.Favorite_route.route) },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            Text(text = "See my favorites")
-        }
-    }
-}
+
 
 @Composable
 fun NowPlaying(movieViewModel: MovieViewModel, navController: NavHostController) {

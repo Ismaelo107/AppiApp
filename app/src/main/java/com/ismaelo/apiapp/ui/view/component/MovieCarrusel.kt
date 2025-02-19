@@ -24,10 +24,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MovieCarusel(
-    title: String,
+
     movies: List<MovieDTO>,
     navController: NavHostController,
-    textColor: Color,
+
 ) {
     val listState = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -35,8 +35,8 @@ fun MovieCarusel(
     LaunchedEffect(movies) {
         if (movies.isNotEmpty()) {
             while (true) {
-                delay(3000) // Espera 3 segundos antes de desplazarse
-                if (!listState.isScrollInProgress) { // Solo se mueve si el usuario no está interactuando
+                delay(3000)
+                if (!listState.isScrollInProgress) {
                     val nextIndex = (listState.firstVisibleItemIndex + 1) % movies.size
                     scope.launch { listState.animateScrollToItem(nextIndex) }
                 }
@@ -51,11 +51,7 @@ fun MovieCarusel(
     ) {
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
-            text = title,
-            color = textColor,
-            style = MaterialTheme.typography.titleMedium,
-        )
+
 
         if (movies.isNotEmpty()) {
             LazyRow(

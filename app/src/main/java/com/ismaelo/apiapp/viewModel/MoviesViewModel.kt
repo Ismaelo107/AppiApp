@@ -171,6 +171,7 @@ class MovieViewModel(private val localDatasource: LocalDatasource) : ViewModel()
     fun saveMovieToLocal(movieDTO: MovieDTO) = viewModelScope.launch(handler) {
         try {
             localDatasource.insert(movieDTO.toLocalMovie())
+            fetchFavoriteMovies() // Refrescar la lista de favoritos después de guardar
         } catch (e: Exception) {
             _uiState.emit(ScreenState.Error("Error al guardar película: ${e.localizedMessage}"))
         }
