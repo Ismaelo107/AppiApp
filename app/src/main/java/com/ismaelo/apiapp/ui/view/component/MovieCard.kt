@@ -7,6 +7,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -77,12 +78,16 @@ fun MovieCard(movie: MovieDTO, navController: NavHostController, movieViewModel:
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+
                     Text(
-                        text = "⭐ ${movie.rating}",
+                        text = "⭐ ${movie.rating}\n🔥${movie.popularity}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Yellow,
                         modifier = Modifier.weight(1f)
                     )
+
+
+
 
                     IconButton(
                         onClick = {
