@@ -25,6 +25,7 @@ import com.ismaelo.apiapp.viewModel.MovieViewModel
 import com.ismaelo.apiapp.viewModel.MovieViewModelFactory
 import kotlinx.coroutines.launch
 
+
 class MainActivity : ComponentActivity() {
     private lateinit var movieViewModel: MovieViewModel
 
