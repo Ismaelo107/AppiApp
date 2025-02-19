@@ -1,8 +1,8 @@
 package com.ismaelo.apiapp.data.remote
 
-import com.ismaelo.apiapp.core.Constants
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -26,4 +26,11 @@ interface ApiService {
     suspend fun getUpComing(
         @Query("api_key") apiKey: String
     ): Response<MovieResponse>
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovieById(
+        @Path("movie_id") movieId: String, @Query("api_key") apiKey: String
+    ): Response<MovieDTO>
+
+
 }
