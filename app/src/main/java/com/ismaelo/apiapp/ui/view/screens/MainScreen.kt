@@ -1,18 +1,24 @@
 package com.ismaelo.apiapp.ui.view.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.ismaelo.apiapp.data.remote.MovieDTO
 import com.ismaelo.apiapp.navigation.Destinations
 import com.ismaelo.apiapp.ui.view.component.MovieCarusel
 import com.ismaelo.apiapp.viewModel.MovieViewModel
@@ -24,8 +30,6 @@ fun MainScreen(movieViewModel: MovieViewModel = viewModel(), navController: NavH
     val topRatedMovies by movieViewModel.topRatedMovies.collectAsState()
     val upcomingMovies by movieViewModel.upcomingMovies.collectAsState()
 
-
-    // Fetch data when screen is loaded
     LaunchedEffect(Unit) {
         movieViewModel.fetchPopularMovies()
         movieViewModel.fetchNowPlayingMovies()
@@ -33,43 +37,53 @@ fun MainScreen(movieViewModel: MovieViewModel = viewModel(), navController: NavH
         movieViewModel.fetchUpcomingMovies()
     }
 
-    LazyColumn {
-        item {
-            // Barra de categorías
-            MovieCategories(navController = navController)
-        }
+    LazyColumn(
+        modifier = Modifier.background(color = Color.Transparent)
+    ) {
+        item { MovieCategories(navController) }
 
         item {
-            // Carrusel de películas populares
-            MovieCarusel(
-                title = "Películas Populares",
-                movies = popularMovies,
-                navController = navController
+            MovieCaruselSection(
+                title = "Películas Populares", movies = popularMovies, navController = navController
             )
         }
         item {
-            // Carrusel de películas ahora en cartelera
-            MovieCarusel(
+            MovieCaruselSection(
                 title = "Películas Ahora en Cartelera",
                 movies = nowPlayingMovies,
                 navController = navController
             )
         }
         item {
-            // Carrusel de películas mejor valoradas
-            MovieCarusel(
+            MovieCaruselSection(
                 title = "Películas Mejor Valoradas",
                 movies = topRatedMovies,
                 navController = navController
             )
         }
         item {
-            // Carrusel de películas próximas
-            MovieCarusel(
-                title = "Próximas Películas", movies = upcomingMovies, navController = navController
+            MovieCaruselSection(title = "Próximas Películas",
+                movies = upcomingMovies,
+                navController = navController,
+                onItemClick = { movieId -> navController.navigate("movieDetails/$movieId") } // Navega a la pantalla de detalles
             )
         }
     }
+}
+
+@Composable
+fun MovieCaruselSection(
+    title: String,
+    movies: List<MovieDTO>,
+    navController: NavHostController,
+    onItemClick: (String) -> Unit = { movieId -> navController.navigate("movieDetails/$movieId") } // Valor predeterminado
+) {
+    MovieCarusel(
+        title = title,
+        movies = movies,
+        navController = navController,
+        textColor = MaterialTheme.colorScheme.onBackground,
+    )
 }
 
 
@@ -82,12 +96,13 @@ fun MovieCategories(navController: NavHostController) {
         "Top UpComings" to Destinations.UpComing.route
     )
 
-    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         items(categories) { (label, route) ->
             Button(onClick = { navController.navigate(route) }) {
-                Text(text = label)
+                Text(text = label, color = MaterialTheme.colorScheme.onBackground)
             }
         }
     }
 }
-
