@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ismaelo.apiapp.ui.view.CreditsScreen
 import com.ismaelo.apiapp.ui.view.screens.FavoritesScreen
+import com.ismaelo.apiapp.ui.view.screens.LocalMovieDetailScreen
 import com.ismaelo.apiapp.ui.view.screens.MainScreen
 import com.ismaelo.apiapp.ui.view.screens.MovieDetailScreen
 import com.ismaelo.apiapp.ui.view.screens.NowPlaying
@@ -16,7 +17,9 @@ import com.ismaelo.apiapp.ui.view.screens.UpComing
 import com.ismaelo.apiapp.viewModel.MovieViewModel
 
 @Composable
-fun AppNavigation(movieViewModel: MovieViewModel, navController: NavHostController) {
+fun AppNavigation(
+    movieViewModel: MovieViewModel, navController: NavHostController
+) {
 
 
     NavHost(
@@ -47,8 +50,12 @@ fun AppNavigation(movieViewModel: MovieViewModel, navController: NavHostControll
         }
 
         composable("movie_details/{movieId}") { backStackEntry ->
-            val movieId = backStackEntry.arguments?.getString("movieId")
-            MovieDetailScreen(movieId)
+            val movieId: String = backStackEntry.arguments?.getString("movieId").toString()
+            MovieDetailScreen(movieId, movieViewModel)
+        }
+        composable("local_movie_details/{movieId}") { backStackEntry ->
+            val movieId: String = backStackEntry.arguments?.getString("movieId").toString()
+            LocalMovieDetailScreen(movieId, movieViewModel)
         }
     }
 

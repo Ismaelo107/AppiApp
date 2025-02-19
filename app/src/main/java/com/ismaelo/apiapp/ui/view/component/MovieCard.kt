@@ -22,12 +22,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -41,27 +37,20 @@ import com.ismaelo.apiapp.viewModel.MovieViewModel
 
 @Composable
 fun MovieCard(movie: MovieDTO, navController: NavHostController, movieViewModel: MovieViewModel) {
-    var isFavorite by remember { mutableStateOf(false) }
-
-    val favorites = movieViewModel.favoriteMovies.collectAsState().value
-    LaunchedEffect(movie.id) {
-        isFavorite = favorites.any { it.id == movie.id }
-    }
+    val favorites by movieViewModel.favoriteMovies.collectAsState()
+    val isFavorite = favorites.any { it.id == movie.id }
 
     val animatedElevation by animateDpAsState(
-        targetValue = if (isFavorite) 10.dp else 200.dp,
-        animationSpec = tween(durationMillis = 900)
+        targetValue = if (isFavorite) 6.dp else 2.dp, // Elevación más sutil
+        animationSpec = tween(durationMillis = 500)
     )
 
-    // Card
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .shadow(animatedElevation, shape = RoundedCornerShape(30.dp), clip = true)
-            .clickable {
-                navController.navigate("movie_details/${movie.id}")
-            },
+            .shadow(animatedElevation, shape = RoundedCornerShape(20.dp), clip = true)
+            .clickable { navController.navigate("movie_details/${movie.id}") },
     ) {
         Box(
             modifier = Modifier
@@ -71,32 +60,27 @@ fun MovieCard(movie: MovieDTO, navController: NavHostController, movieViewModel:
             Image(
                 painter = rememberAsyncImagePainter("https://image.tmdb.org/t/p/w500${movie.image}"),
                 contentDescription = movie.title,
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             )
 
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .align(Alignment.BottomStart) // Alineación del texto
-                    .background(
-                        Color.Black.copy(alpha = 0.1f), shape = RoundedCornerShape(12.dp)
-                    )
+                    .align(Alignment.BottomStart)
+                    .background(Color.Black.copy(alpha = 0.3f), shape = RoundedCornerShape(12.dp))
             ) {
                 Row(
                     modifier = Modifier
                         .padding(7.dp)
                         .align(Alignment.BottomStart),
                     verticalAlignment = Alignment.Bottom
-
-
                 ) {
                     Text(
-                        text = "Rating: ${movie.rating}",
+                        text = "⭐ ${movie.rating}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.White
                     )
-                    // Botón de favorito con animación
+
                     IconButton(
                         onClick = {
                             if (isFavorite) {
@@ -104,20 +88,17 @@ fun MovieCard(movie: MovieDTO, navController: NavHostController, movieViewModel:
                             } else {
                                 movieViewModel.saveMovieToLocal(movie)
                             }
-                            isFavorite = !isFavorite
-                        }, modifier = Modifier.size(36.dp) // Tamaño del ícono
+                        }, modifier = Modifier.size(36.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Favorite,
                             contentDescription = "Favorite",
                             tint = if (isFavorite) Color.Red else Color.Gray,
-                            modifier = Modifier.animateContentSize() // Animación de tamaño
+                            modifier = Modifier.animateContentSize()
                         )
                     }
                 }
             }
-
-
         }
     }
 }
