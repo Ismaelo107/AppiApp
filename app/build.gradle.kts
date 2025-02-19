@@ -85,5 +85,6 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.2.2")
 
 
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.31.5-beta")
 
 }

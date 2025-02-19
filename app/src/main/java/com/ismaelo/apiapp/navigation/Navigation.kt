@@ -2,6 +2,7 @@ package com.ismaelo.apiapp.navigation
 
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,7 +19,7 @@ import com.ismaelo.apiapp.viewModel.MovieViewModel
 
 @Composable
 fun AppNavigation(
-    movieViewModel: MovieViewModel, navController: NavHostController
+    modifier: Modifier = Modifier, movieViewModel: MovieViewModel, navController: NavHostController
 ) {
 
 
@@ -46,7 +47,7 @@ fun AppNavigation(
             FavoritesScreen(movieViewModel, navController)
         }
         composable("creditos_screen") {
-            CreditsScreen(navController)
+            CreditsScreen(modifier)
         }
 
         composable("movie_details/{movieId}") { backStackEntry ->
