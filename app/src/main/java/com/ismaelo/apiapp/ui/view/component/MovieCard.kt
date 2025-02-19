@@ -49,36 +49,39 @@ fun MovieCard(movie: MovieDTO, navController: NavHostController, movieViewModel:
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .shadow(animatedElevation, shape = RoundedCornerShape(20.dp), clip = true)
+            .shadow(animatedElevation, shape = RoundedCornerShape(12.dp), clip = true)
             .clickable { navController.navigate("movie_details/${movie.id}") },
+        shape = RoundedCornerShape(12.dp)
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(260.dp)
         ) {
+            // Imagen de fondo
             Image(
                 painter = rememberAsyncImagePainter("https://image.tmdb.org/t/p/w500${movie.image}"),
                 contentDescription = movie.title,
                 modifier = Modifier.fillMaxSize()
             )
 
+            // Box semitransparente con rating y botón de favorito
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.BottomStart)
-                    .background(Color.Black.copy(alpha = 0.3f), shape = RoundedCornerShape(12.dp))
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .background(Color.Black.copy(alpha = 0.7f))
+                    .padding(8.dp)
             ) {
                 Row(
-                    modifier = Modifier
-                        .padding(7.dp)
-                        .align(Alignment.BottomStart),
-                    verticalAlignment = Alignment.Bottom
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = "⭐ ${movie.rating}",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color.White
+                        color = Color.Yellow,
+                        modifier = Modifier.weight(1f)
                     )
 
                     IconButton(
@@ -88,12 +91,16 @@ fun MovieCard(movie: MovieDTO, navController: NavHostController, movieViewModel:
                             } else {
                                 movieViewModel.saveMovieToLocal(movie)
                             }
-                        }, modifier = Modifier.size(36.dp)
+                        },
+                        modifier = Modifier.size(40.dp)
                     ) {
+                        val updatedFavorites by movieViewModel.favoriteMovies.collectAsState() // Asegura recomposición
+                        val currentlyFavorite = updatedFavorites.any { it.id == movie.id } // Recalcula estado
+
                         Icon(
                             imageVector = Icons.Default.Favorite,
                             contentDescription = "Favorite",
-                            tint = if (isFavorite) Color.Red else Color.Gray,
+                            tint = if (currentlyFavorite) Color.Red else Color.Gray,
                             modifier = Modifier.animateContentSize()
                         )
                     }
@@ -102,3 +109,5 @@ fun MovieCard(movie: MovieDTO, navController: NavHostController, movieViewModel:
         }
     }
 }
+
+
