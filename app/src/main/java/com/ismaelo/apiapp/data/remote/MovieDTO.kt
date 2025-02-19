@@ -16,7 +16,9 @@ data class MovieDTO(
     @SerializedName("popularity")
     val popularity: String,
     @SerializedName("vote_average")
-    val rating: String
+    val rating: String,
+    /* @SerializedName("release_date")
+     val date: String*/
 )
 
 fun MovieDTO.toLocalMovie() =

@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -26,7 +29,7 @@ fun DrawerContent(navController: NavHostController) {
             DrawerHeader()
 
             // Sección de Inicio
-            DrawerSectionTitle("Inicio")
+            DrawerSectionTitle("Home")
             DrawerItem(
                 icon = Icons.Default.Home,
                 label = "Home",
@@ -34,33 +37,33 @@ fun DrawerContent(navController: NavHostController) {
             )
 
             // Sección de Favoritos
-            DrawerSectionTitle("Favoritos")
+            DrawerSectionTitle("Favorites")
             DrawerItem(
                 icon = Icons.Default.Favorite,
-                label = "Mis Favoritos",
+                label = "My Favorites",
                 onClick = { navController.navigate(Destinations.Favorite_route.route) }
             )
 
             // Sección de Categorías de Películas
-            DrawerSectionTitle("Categorías")
+            DrawerSectionTitle("Categories")
             DrawerItem(
                 icon = Icons.Default.PlayArrow,
-                label = "Películas en Cartelera",
+                label = "Now Play Movies",
                 onClick = { navController.navigate(Destinations.NowPlaying.route) }
             )
             DrawerItem(
                 icon = Icons.Default.Star,
-                label = "Películas Populares",
+                label = "Popular Movies",
                 onClick = { navController.navigate(Destinations.Popular.route) }
             )
             DrawerItem(
                 icon = Icons.Default.ThumbUp,
-                label = "Películas Mejor Valoradas",
+                label = "Top Rated Movies",
                 onClick = { navController.navigate(Destinations.TopRated.route) }
             )
             DrawerItem(
                 icon = Icons.Default.KeyboardArrowUp,
-                label = "Próximos Estrenos",
+                label = "UpComing",
                 onClick = { navController.navigate(Destinations.UpComing.route) }
             )
 
@@ -92,9 +95,10 @@ fun DrawerHeader() {
             color = MaterialTheme.colorScheme.primary
         )
         Text(
-            text = "Explora el mundo del cine",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+            text = "Explora el mundo del cine, encuentra lo que necesitas. Que es lo más votado," +
+                    " lo más popular y guarda tus preferidas para que no se te olvide.",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
         )
     }
 }
