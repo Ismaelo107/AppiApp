@@ -1,6 +1,7 @@
 package com.ismaelo.apiapp.ui.view.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,13 +24,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.ismaelo.apiapp.navigation.Destinations
 import com.ismaelo.apiapp.ui.util.ScreenState
 import com.ismaelo.apiapp.viewModel.MovieViewModel
+
 @Composable
-fun MovieDetailScreen(movieId: String, viewModel: MovieViewModel) {
+fun MovieDetailScreen(movieId: String, viewModel: MovieViewModel, navController: NavController) {
     val movieDetail by viewModel.movieDetail.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
     val uiState by viewModel.uiState.collectAsState()
@@ -42,9 +49,19 @@ fun MovieDetailScreen(movieId: String, viewModel: MovieViewModel) {
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Column(modifier = Modifier.padding(16.dp)) {
-
+    Box(
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(5.dp)
+                .background(
+                    color = Color.Black.copy(alpha = 0.3f), // Fondo oscuro con transparencia
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .padding(5.dp) // Padding adicional
+        ) {
             when {
                 isLoading -> CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
 
@@ -58,7 +75,6 @@ fun MovieDetailScreen(movieId: String, viewModel: MovieViewModel) {
                     )
                 }
 
-                // Si se obtuvo el detalle de la película, mostramos los datos
                 movieDetail != null -> {
                     Column(
                         modifier = Modifier.fillMaxSize(),
@@ -66,7 +82,8 @@ fun MovieDetailScreen(movieId: String, viewModel: MovieViewModel) {
                     ) {
                         Text(
                             text = movieDetail!!.title,
-                            style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onBackground),
+                            style = MaterialTheme.typography.headlineLarge,
+                            color = Color.Cyan,
                             modifier = Modifier.padding(horizontal = 8.dp)
                         )
 
@@ -78,9 +95,7 @@ fun MovieDetailScreen(movieId: String, viewModel: MovieViewModel) {
                                 .height(250.dp)
                                 .clip(RoundedCornerShape(16.dp))
                                 .border(
-                                    2.dp,
-                                    MaterialTheme.colorScheme.onSurface,
-                                    RoundedCornerShape(16.dp)
+                                    2.dp, Color.Yellow, RoundedCornerShape(16.dp)
                                 ),
                             contentScale = ContentScale.Crop
                         )
@@ -97,14 +112,26 @@ fun MovieDetailScreen(movieId: String, viewModel: MovieViewModel) {
 
                         Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                             Text(
-                                text = "Popularidad: ${movieDetail!!.popularity}",
-                                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                text = "⭐️ Popularidad: ${movieDetail!!.popularity}",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.Yellow
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = "Rating: ${movieDetail!!.rating}",
-                                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                text = "🔥 Rating: ${movieDetail!!.rating}",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color(0xFFFF7400)
                             )
+                        }
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            onClick = { navController.navigate(Destinations.Home.route) },
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                                .border(2.dp, Color.Yellow, RoundedCornerShape(100.dp)),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                        ) {
+                            Text(text = "Volver", color = Color(0xFFFF7400))
                         }
                     }
                 }

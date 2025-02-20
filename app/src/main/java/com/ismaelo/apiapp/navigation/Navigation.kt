@@ -52,7 +52,7 @@ fun AppNavigation(
 
         composable("movie_details/{movieId}") { backStackEntry ->
             val movieId: String = backStackEntry.arguments?.getString("movieId").toString()
-            MovieDetailScreen(movieId, movieViewModel)
+            MovieDetailScreen(movieId, movieViewModel, navController)
         }
         composable("local_movie_details/{movieId}") { backStackEntry ->
             val movieId: String = backStackEntry.arguments?.getString("movieId").toString()
