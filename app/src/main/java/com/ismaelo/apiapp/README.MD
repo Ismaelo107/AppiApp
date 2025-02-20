@@ -1,20 +1,19 @@
 #iMovie
-Es una aplicación que se basa en la API de The Movie Database (TMDb) para mostrar películas.
 
-En la pantalla principal mustra un lazy row list de las diferentes vistas de las películas.Un
-conjunto
-de carruseles con todas las películas que se dividen en los
-siguientes: más poulares, más votados, en cartelera, y proximamente.
+iMovie es una aplicación basada en la API de The Movie Database (TMDb) que permite explorar
+películas en distintas categorías.
 
-Mi pantalla se divide en una barra superior con un menú desplegable izquierdo que nos permitirá
-navegar entre las diferentes pantallas.
+En la pantalla principal se muestra un Lazy Row List con diferentes vistas de películas, y debajo
+organizadas las peliculas en carruseles según las siguientes categorías:
 
-Las diferentes pantallas son:
+    Más populares: Películas con mayor número de visualizaciones.
+    Mejor valoradas: Películas con las mejores calificaciones.
+    En cartelera: Películas actualmente en emisión en los cines.
+    Próximamente: Películas que se estrenarán en el futuro.
 
-    En Cartelera: Muestra las películas que están en cartelera.
-    Más Populares: Muestra las películas ordenads por popularidad.
-    Mejor valoradas: Muestra las películas ordenadas por su valoración.
-    Próximamente: Muestra las películas que serán estrenadas en el futuro.
+La interfaz cuenta con una barra superior y un menú desplegable lateral izquierdo para navegar entre
+las distintas vistas de la aplicación las antes mencionads y las siguientes:
+
     Favoritos: Muestra las películas que hemos marcado como favoritos y se guardará en nuestra BBDD.
     Autor y créditos: Créditos de la Api de BBDD, el autor de la app, fecha y versión.
     
