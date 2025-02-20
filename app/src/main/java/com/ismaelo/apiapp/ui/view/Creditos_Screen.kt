@@ -59,7 +59,7 @@ fun CreditsScreen(modifier: Modifier = Modifier) {
                     text = "Créditos de iMovies",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF00FF8F),
+                    color = Color.Yellow,
 
 
                     modifier = Modifier.padding(bottom = 32.dp)
@@ -76,14 +76,14 @@ fun CreditsScreen(modifier: Modifier = Modifier) {
                     text = "Nombre App:",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color(0xFFFF8000),
+                    color = Color(0xFF00F3FF),
 
                     )
                 Text(
                     text = "iMovies",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF00F3FF),
+                    color = Color(0xFFFF7400),
 
                     )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -93,14 +93,14 @@ fun CreditsScreen(modifier: Modifier = Modifier) {
                     text = "Desarrollador:",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color(0xFFFF8000),
+                    color = Color(0xFF00F3FF),
 
                     )
                 Text(
                     text = "Ismael Ouardane El Ghali",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF00F3FF),
+                    color = Color(0xFFFF7400),
 
                     )
 
@@ -112,7 +112,7 @@ fun CreditsScreen(modifier: Modifier = Modifier) {
                     text = "Datos proporcionados por:",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color(0xFFFF8000),
+                    color = Color(0xFF00F3FF),
 
                     )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -121,7 +121,7 @@ fun CreditsScreen(modifier: Modifier = Modifier) {
                     text = "The Movie Database (TMDB)",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF00F3FF),
+                    color = Color(0xFFFF7400),
                 )
 
 
@@ -133,8 +133,7 @@ fun CreditsScreen(modifier: Modifier = Modifier) {
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Normal,
-                    color = Color(0xFF00F3FF),
-
+                    color = Color(0xFFFF7400),
 
                     lineHeight = 24.sp // Añadir altura de línea para mejorar la legibilidad
                 )
@@ -148,7 +147,7 @@ fun CreditsScreen(modifier: Modifier = Modifier) {
                     text = "Fecha de Creación: ",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color(0xFFFF8000),
+                    color = Color(0xFF00F3FF),
                 )
 
                 Text(
@@ -167,14 +166,14 @@ fun CreditsScreen(modifier: Modifier = Modifier) {
                     text = "Versión:",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Medium,
-                    color = Color(0xFFFF8000),
+                    color = Color(0xFFFF7400),
 
                     )
                 Text(
                     text = "1.0.0",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF00F3FF),
+                    color = Color(0xFFFF7400),
 
                     )
 

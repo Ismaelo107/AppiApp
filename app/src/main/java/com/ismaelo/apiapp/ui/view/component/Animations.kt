@@ -19,8 +19,8 @@ import androidx.compose.ui.graphics.Color
 fun AnimatedGradientBackground() {
     val infiniteTransition = rememberInfiniteTransition()
     val offsetX by infiniteTransition.animateFloat(
-        initialValue = 0f, targetValue = 3000f, animationSpec = infiniteRepeatable(
-            animation = tween(6000, easing = LinearEasing), repeatMode = RepeatMode.Reverse
+        initialValue = 0f, targetValue = 10000f, animationSpec = infiniteRepeatable(
+            animation = tween(10000, easing = LinearEasing), repeatMode = RepeatMode.Reverse
         )
     )
 
@@ -28,9 +28,10 @@ fun AnimatedGradientBackground() {
         val gradient = Brush.linearGradient(
             colors = listOf(
                 Color.Black,
+                Color.DarkGray,
                 Color.Cyan,
 
-                ), start = Offset(offsetX, 0f), end = Offset(offsetX + 500f, 1500f)
+                ), start = Offset(offsetX, 0f), end = Offset(offsetX + 500f, 1000f)
         )
         drawRect(brush = gradient, size = size)
     }
