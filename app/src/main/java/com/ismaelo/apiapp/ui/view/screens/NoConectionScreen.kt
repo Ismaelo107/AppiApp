@@ -1,5 +1,6 @@
 package com.ismaelo.apiapp.ui.view.screens
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -7,7 +8,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,28 +26,55 @@ fun NoConnectionScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
+            .padding(horizontal = 35.dp)
+            .padding(top = 200.dp),
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "No hay conexión a Internet. \nPor favor, verifica tu conexión.",
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.White
+                text = "No hay conexión a Internet",
+                style = MaterialTheme.typography.headlineMedium.copy(color = Color.Red),
+                modifier = Modifier.padding(bottom = 16.dp)
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = {
-                navController.navigate(Destinations.Home.route) // Intentar de nuevo o navegar a otra pantalla.
-            }) {
-                Text(text = "Intentar de nuevo")
+
+            Text(
+                text = "Por favor, verifica tu conexión.",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White,
+                modifier = Modifier.padding(bottom = 32.dp)
+            )
+
+            Button(
+                onClick = {
+                    navController.navigate(Destinations.Home.route)
+                },
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .border(2.dp, Color.Yellow, RoundedCornerShape(100.dp)),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+
+                ) {
+                Text(
+                    text = "Intentar de nuevo", color = Color(0xFFFF7400)
+                )
             }
-            Button(onClick = {
-                navController.navigate(Destinations.Favorite_route.route) // Intentar de nuevo o navegar a otra pantalla.
-            }) {
-                Text(text = "Ir a Favoritos")
+
+            Spacer(modifier = Modifier.height(8.dp))
+            Button(
+                onClick = {
+                    navController.navigate(Destinations.Favorite_route.route)
+                },
+
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .border(2.dp, Color.Yellow, RoundedCornerShape(100.dp)),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+            ) {
+                Text(
+                    text = "Ir a Favoritos", color = Color(0xFFFF7400)
+                )
             }
         }
     }
