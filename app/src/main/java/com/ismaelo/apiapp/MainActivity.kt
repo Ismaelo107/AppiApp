@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -14,7 +13,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import com.ismaelo.apiapp.data.local.LocalDatasource
@@ -46,9 +44,10 @@ class MainActivity : ComponentActivity() {
 
             ApiAppTheme {
 
-                ModalNavigationDrawer(
-                    drawerState = drawerState,
-                    drawerContent = { DrawerContent(navController) }) {
+                ModalNavigationDrawer(drawerState = drawerState, drawerContent = {
+                    DrawerContent(navController,
+                        closeDrawer = { scope.launch { drawerState.close() } })
+                }) {
                     Scaffold(topBar = {
                         TopNavigationBar(
                             onMenuClick = { scope.launch { drawerState.open() } },
