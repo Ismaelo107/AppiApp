@@ -1,31 +1,12 @@
 package com.ismaelo.apiapp.navigation.navigationBar
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalDrawerSheet
-import androidx.compose.material3.NavigationDrawerItem
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -34,7 +15,7 @@ import androidx.navigation.NavHostController
 import com.ismaelo.apiapp.navigation.Destinations
 
 @Composable
-fun DrawerContent(navController: NavHostController) {
+fun DrawerContent(navController: NavHostController, closeDrawer: () -> Unit) {
     ModalDrawerSheet {
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
@@ -42,35 +23,42 @@ fun DrawerContent(navController: NavHostController) {
             DrawerHeader()
 
             DrawerSectionTitle("Home")
-            DrawerItem(icon = Icons.Default.Home,
-                label = "Home",
-                onClick = { navController.navigate(Destinations.Home.route) })
+            DrawerItem(icon = Icons.Default.Home, label = "Home") {
+                navController.navigate(Destinations.Home.route)
+                closeDrawer()
+            }
 
             DrawerSectionTitle("Favorites")
-            DrawerItem(icon = Icons.Default.Favorite,
-                label = "My Favorites",
-                onClick = { navController.navigate(Destinations.Favorite_route.route) })
+            DrawerItem(icon = Icons.Default.Favorite, label = "My Favorites") {
+                navController.navigate(Destinations.Favorite_route.route)
+                closeDrawer()
+            }
 
             DrawerSectionTitle("Categories")
-            DrawerItem(icon = Icons.Default.PlayArrow,
-                label = "Now Play Movies",
-                onClick = { navController.navigate(Destinations.NowPlaying.route) })
-            DrawerItem(icon = Icons.Default.Star,
-                label = "Popular Movies",
-                onClick = { navController.navigate(Destinations.Popular.route) })
-            DrawerItem(icon = Icons.Default.ThumbUp,
-                label = "Top Rated Movies",
-                onClick = { navController.navigate(Destinations.TopRated.route) })
-            DrawerItem(icon = Icons.Default.KeyboardArrowUp,
-                label = "UpComing",
-                onClick = { navController.navigate(Destinations.UpComing.route) })
+            DrawerItem(icon = Icons.Default.PlayArrow, label = "Now Playing Movies") {
+                navController.navigate(Destinations.NowPlaying.route)
+                closeDrawer()
+            }
+            DrawerItem(icon = Icons.Default.Star, label = "Popular Movies") {
+                navController.navigate(Destinations.Popular.route)
+                closeDrawer()
+            }
+            DrawerItem(icon = Icons.Default.ThumbUp, label = "Top Rated Movies") {
+                navController.navigate(Destinations.TopRated.route)
+                closeDrawer()
+            }
+            DrawerItem(icon = Icons.Default.KeyboardArrowUp, label = "Upcoming") {
+                navController.navigate(Destinations.UpComing.route)
+                closeDrawer()
+            }
 
             Spacer(modifier = Modifier.height(8.dp))
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
-            DrawerItem(icon = Icons.Default.Info,
-                label = "Autor y Créditos",
-                onClick = { navController.navigate(Destinations.Credits.route) })
+            DrawerItem(icon = Icons.Default.Info, label = "Autor y Créditos") {
+                navController.navigate(Destinations.Credits.route)
+                closeDrawer()
+            }
         }
     }
 }
@@ -88,7 +76,8 @@ fun DrawerHeader() {
             color = MaterialTheme.colorScheme.primary
         )
         Text(
-            text = "Explora el mundo del cine, encuentra lo que necesitas. Que es lo más votado," + " lo más popular y guarda tus preferidas para que no se te olvide.",
+            text = "Explora el mundo del cine, encuentra lo que necesitas. " +
+                    "Lo más votado, lo más popular y guarda tus preferidas.",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
         )
@@ -126,6 +115,9 @@ fun DrawerItem(icon: ImageVector, label: String, onClick: () -> Unit) {
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }
-        }, selected = false, onClick = onClick, modifier = Modifier.padding(horizontal = 8.dp)
+        },
+        selected = false,
+        onClick = onClick,
+        modifier = Modifier.padding(horizontal = 8.dp)
     )
 }
