@@ -65,7 +65,6 @@ class MovieViewModel(private val localDatasource: LocalDatasource) : ViewModel()
             updateState = { _nowPlayingMovies.value = it })
 
     // Función para obtener las películas más valoradas (Top Rated)
-
     fun fetchTopRatedMovies() =
         fetchMovies(call = { apiService.getPopular(Constants.API_KEY) }, updateState = { movies ->
             _popularMovies.value = movies.sortedByDescending { it.rating }
@@ -100,13 +99,13 @@ class MovieViewModel(private val localDatasource: LocalDatasource) : ViewModel()
     fun fetchMovieById(movieId: String) = viewModelScope.launch(handler) {
         _isLoading.emit(true)
         try {
-            Log.d("MovieViewModel", "Buscando película con ID: $movieId") // 📌 Log de ID
+            Log.d("MovieViewModel", "Buscando película con ID: $movieId")
 
             val response = apiService.getMovieById(movieId, Constants.API_KEY)
-            Log.d("MovieViewModel", "Respuesta de la API: $response") // 📌 Log de respuesta
+            Log.d("MovieViewModel", "Respuesta de la API: $response")
 
             val movieResponse = response.body()
-            Log.d("MovieViewModel", "Cuerpo de la respuesta: $movieResponse") // 📌 Log de body
+            Log.d("MovieViewModel", "Cuerpo de la respuesta: $movieResponse")
 
             if (response.isSuccessful && movieResponse != null) {
                 val movieDTO = MovieDTO(
@@ -117,7 +116,7 @@ class MovieViewModel(private val localDatasource: LocalDatasource) : ViewModel()
                     popularity = movieResponse.popularity,
                     rating = movieResponse.rating
                 )
-                Log.d("MovieViewModel", "Película encontrada: $movieDTO") // 📌 Log de película
+                Log.d("MovieViewModel", "Película encontrada: $movieDTO")
 
                 _movieDetail.emit(movieDTO)
                 _uiState.emit(ScreenState.Success(movieDTO))
