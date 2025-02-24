@@ -54,8 +54,10 @@ class MovieViewModel(private val localDatasource: LocalDatasource) : ViewModel()
     }
 
     // Función para obtener las películas populares desde la API
-    fun fetchPopularMovies() = fetchMovies(call = { apiService.getPopular(Constants.API_KEY) },
-        updateState = { _popularMovies.value = it })
+    fun fetchPopularMovies() =
+        fetchMovies(call = { apiService.getPopular(Constants.API_KEY) }, updateState = { movies ->
+            _popularMovies.value = movies.sortedByDescending { it.popularity }
+        })
 
     // Función para obtener las películas en cartelera (Now Playing)
     fun fetchNowPlayingMovies() =
@@ -63,8 +65,10 @@ class MovieViewModel(private val localDatasource: LocalDatasource) : ViewModel()
             updateState = { _nowPlayingMovies.value = it })
 
     // Función para obtener las películas más valoradas (Top Rated)
-    fun fetchTopRatedMovies() = fetchMovies(call = { apiService.getTopRated(Constants.API_KEY) },
-        updateState = { _topRatedMovies.value = it.sortedByDescending { movie -> movie.rating } })
+    fun fetchTopRatedMovies() =
+        fetchMovies(call = { apiService.getPopular(Constants.API_KEY) }, updateState = { movies ->
+            _popularMovies.value = movies.sortedByDescending { it.rating }
+        })
 
     // Función para obtener las próximas películas (Upcoming)
     fun fetchUpcomingMovies() = fetchMovies(call = { apiService.getUpComing(Constants.API_KEY) },
@@ -95,13 +99,13 @@ class MovieViewModel(private val localDatasource: LocalDatasource) : ViewModel()
     fun fetchMovieById(movieId: String) = viewModelScope.launch(handler) {
         _isLoading.emit(true)
         try {
-            Log.d("MovieViewModel", "Buscando película con ID: $movieId") // 📌 Log de ID
+            Log.d("MovieViewModel", "Buscando película con ID: $movieId")
 
             val response = apiService.getMovieById(movieId, Constants.API_KEY)
-            Log.d("MovieViewModel", "Respuesta de la API: $response") // 📌 Log de respuesta
+            Log.d("MovieViewModel", "Respuesta de la API: $response")
 
             val movieResponse = response.body()
-            Log.d("MovieViewModel", "Cuerpo de la respuesta: $movieResponse") // 📌 Log de body
+            Log.d("MovieViewModel", "Cuerpo de la respuesta: $movieResponse")
 
             if (response.isSuccessful && movieResponse != null) {
                 val movieDTO = MovieDTO(
@@ -112,7 +116,7 @@ class MovieViewModel(private val localDatasource: LocalDatasource) : ViewModel()
                     popularity = movieResponse.popularity,
                     rating = movieResponse.rating
                 )
-                Log.d("MovieViewModel", "Película encontrada: $movieDTO") // 📌 Log de película
+                Log.d("MovieViewModel", "Película encontrada: $movieDTO")
 
                 _movieDetail.emit(movieDTO)
                 _uiState.emit(ScreenState.Success(movieDTO))
@@ -138,7 +142,6 @@ class MovieViewModel(private val localDatasource: LocalDatasource) : ViewModel()
     val movieDetailFromLocal: StateFlow<Movie?> = _movieDetailFromLocal.asStateFlow()
 
 
-
     // Esto es en tu ViewModel, asegúrate de que se emita correctamente
     // Función para obtener una película específica desde la base de datos local
     fun fetchMovieFromLocalById(movieId: String) = viewModelScope.launch(handler) {
@@ -157,14 +160,12 @@ class MovieViewModel(private val localDatasource: LocalDatasource) : ViewModel()
             }
         } catch (e: Exception) {
             // Capturamos cualquier error y lo mostramos
-            val errorMessage = "Error al obtener película desde la base de datos local: ${e.localizedMessage}"
+            val errorMessage =
+                "Error al obtener película desde la base de datos local: ${e.localizedMessage}"
             Log.e("MovieViewModel", errorMessage)
             _uiState.emit(ScreenState.Error(errorMessage))
         }
     }
-
-
-
 
 
     // Función para guardar una película en la base de datos local
